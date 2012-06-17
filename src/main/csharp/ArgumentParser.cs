@@ -60,7 +60,7 @@ namespace Net.XpForge.INotify
 				}
 				else if ("--event".Equals(args[i]) || "-e".Equals(args[i]))
 				{
-					result.Events = new List<string>(Value(args, ++i, "event").Split('-'));
+					result.Events = new List<string>(Value(args, ++i, "event").Split(','));
 				}
 				else if ("--format".Equals(args[i]))
 				{
