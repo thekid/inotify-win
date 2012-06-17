@@ -1,18 +1,18 @@
 inotify-win
 ===========
-A port of the inotify-wait tool for Windows, see http://linux.die.net/man/1/inotifywait
+A port of the **inotifywait** tool for Windows, see http://linux.die.net/man/1/inotifywait
 
 Compiling
 =========
-Run `make` in this directory. This will create the executable, `inotify-wait.exe`.
+Run `make` in this directory. This will create the executable, `inotifywait.exe`.
 
 Usage
 =====
 The command line arguments are similar to the original one's:
 
 ```sh
-$ ./inotify-wait.exe
-Usage: inotify-wait [options] path
+$ ./inotifywait.exe
+Usage: inotifywait [options] path
 
 Options:
 -r/--recursive:  Recursively watch all files and subdirectories inside path

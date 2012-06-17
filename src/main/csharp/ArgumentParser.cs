@@ -75,9 +75,9 @@ namespace Net.XpForge.INotify
 		}
 
 		/// Usage
-		public void PrintUsage(TextWriter writer)
+		public void PrintUsage(string name, TextWriter writer)
 		{
-			writer.WriteLine("Usage: inotify-wait [options] path");
+			writer.WriteLine("Usage: " + name + " [options] path");
 			writer.WriteLine();
 			writer.WriteLine("Options:");
 			writer.WriteLine("-r/--recursive:  Recursively watch all files and subdirectories inside path");

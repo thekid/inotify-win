@@ -111,7 +111,7 @@ namespace Net.XpForge.INotify
 			// Show usage if no args or standard "help" args are given
 			if (0 == args.Length || args[0].Equals("-?") || args[0].Equals("--help"))
 			{
-				p.PrintUsage(Console.Error);
+				p.PrintUsage("inotifywait", Console.Error);
 				return 1;
 			}
 
