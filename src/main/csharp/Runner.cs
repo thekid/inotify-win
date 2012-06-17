@@ -77,8 +77,9 @@ namespace Net.XpForge.INotify
 				if (!args.Quiet) 
 				{
 					Console.Error.WriteLine(
-						"===> {0} {1}{2} for {3}",
+						"===> {0} for {1} in {2}{3} for {4}",
 						args.Monitor ? "Monitoring" : "Watching", 
+						changes,
 						args.Path, 
 						args.Recursive ? " -r" : "", 
 						String.Join(", ", args.Events.ToArray())
