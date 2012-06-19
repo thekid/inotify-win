@@ -5,7 +5,8 @@ using System.Collections.Generic;
 namespace Net.XpForge.INotify
 {
 	// List of possible changes
-	public enum Change {
+	public enum Change 
+	{
 		CREATE, MODIFY, DELETE, MOVE_FROM, MOVE_TO
 	}
 
@@ -15,7 +16,8 @@ namespace Net.XpForge.INotify
 		// Mappings
 		protected static Dictionary<WatcherChangeTypes, Change> Changes = new Dictionary<WatcherChangeTypes, Change>();
 
-		static Runner() {
+		static Runner() 
+		{
 			Changes[WatcherChangeTypes.Created]= Change.CREATE;
 			Changes[WatcherChangeTypes.Changed]= Change.MODIFY;
 			Changes[WatcherChangeTypes.Deleted]= Change.DELETE;
