@@ -1,6 +1,6 @@
 inotify-win
 ===========
-A port of the **inotifywait** tool for Windows, see http://linux.die.net/man/1/inotifywait
+A port of the **inotifywait** tool for Windows, see https://github.com/rvoicilas/inotify-tools
 
 Compiling
 =========
