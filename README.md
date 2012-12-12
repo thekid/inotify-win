@@ -12,7 +12,7 @@ The command line arguments are similar to the original one's:
 
 ```sh
 $ ./inotifywait.exe
-Usage: inotifywait [options] path
+Usage: inotifywait [options] path [...]
 
 Options:
 -r/--recursive:  Recursively watch all files and subdirectories inside path
