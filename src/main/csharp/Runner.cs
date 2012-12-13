@@ -19,6 +19,7 @@ namespace Net.XpForge.INotify
 
 		private List<Thread> _threads = new List<Thread>();
 		private bool _eventOccured = false;
+		private Semaphore _semaphore = new Semaphore(0, 1);
 		private Arguments _args = null;
 
 		static Runner()
@@ -105,6 +106,7 @@ namespace Net.XpForge.INotify
 					if (!_args.Monitor)
 					{
 						_eventOccured = true;
+						_semaphore.Release();
 					}
 					if (WatcherChangeTypes.Renamed.Equals(e.ChangeType))
 					{
@@ -128,10 +130,7 @@ namespace Net.XpForge.INotify
 				t.Start(path);
 				_threads.Add(t);
 			}
-			while (_args.Monitor || !_eventOccured)
-			{
-				Thread.Sleep(1);
-			}
+			_semaphore.WaitOne();
 			foreach (var thread in _threads)
 			{
 				if (thread.IsAlive)
