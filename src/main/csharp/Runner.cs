@@ -122,7 +122,7 @@ namespace Net.XpForge.INotify
 		/// Entry point
 		public int Run()
 		{
-			foreach (var path in _args.Pathes)
+			foreach (var path in _args.Paths)
 			{
 				Thread t = new Thread(new ParameterizedThreadStart(Processor));
 				t.Start(path);

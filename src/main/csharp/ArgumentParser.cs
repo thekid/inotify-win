@@ -66,7 +66,7 @@ namespace Net.XpForge.INotify
 			}
 			else if (Directory.Exists(option))
 			{
-				result.Pathes.Add(System.IO.Path.GetFullPath(option));
+				result.Paths.Add(System.IO.Path.GetFullPath(option));
 			}
 		}
 

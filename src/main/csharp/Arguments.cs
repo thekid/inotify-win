@@ -9,13 +9,13 @@ namespace Net.XpForge.INotify
 		// Default values
 		private List<string> _Events = new List<string>(new string[] { "create", "modify", "delete", "move" });
 		private string[] _Format = new string[] { "w", " ", "e", " ", "f" };
-		private List<string> _Pathes = new List<string>();
+		private List<string> _Paths = new List<string>();
 
 		public bool Recursive { get; set; }
 		public bool Monitor { get; set; }
 		public bool Quiet { get; set; }
-		public List<string> Pathes {
-			get { return this._Pathes; }
+		public List<string> Paths {
+			get { return this._Paths; }
 		}
 		public string[] Format {
 			get { return this._Format; }
