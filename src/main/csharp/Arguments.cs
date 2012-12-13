@@ -8,13 +8,16 @@ namespace Net.XpForge.INotify
 	{
 		// Default values
 		private List<string> _Events = new List<string>(new string[] { "create", "modify", "delete", "move" });
-		private string[] _Format = new string[] { "e", "\": ", "f" };
+		private string[] _Format = new string[] { "w", " ", "e", " ", "f" };
+		private List<string> _Paths = new List<string>();
 
 		public bool Recursive { get; set; }
 		public bool Monitor { get; set; }
 		public bool Quiet { get; set; }
-		public string Path { get; set; }
-		public string[] Format { 
+		public List<string> Paths {
+			get { return this._Paths; }
+		}
+		public string[] Format {
 			get { return this._Format; }
 			set { this._Format = value; }
 		}

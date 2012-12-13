@@ -22,53 +22,69 @@ namespace Net.XpForge.INotify
 		/// Tokenizes "printf" format string into an array of strings
 		protected string[] TokenizeFormat(string arg)
 		{
-			var result = new List<string>(new string[] { "\"" });
-			var offset = 0;
-			for (var i = 0; i < arg.Length; i++)
+			var result = new List<string>();
+			var tokens = arg.Split(new char[]{ '%' });
+			foreach (var token in tokens)
 			{
-				if ('%'.Equals(arg[i]))
+				if (token.Length == 0)
+					continue;
+				if ("efwT".IndexOf(token[0]) != -1)
 				{
-					result.Add(new String(arg[++i], 1));
-					result.Add("\"");
-					offset += 2;
+					result.Add(token[0].ToString());
+					if (token.Length > 1)
+						result.Add(token.Substring(1));
 				}
 				else
 				{
-					result[offset] += arg[i];
+					result.Add(token);
 				}
 			}
 			return result.ToArray();
+		}
+
+		private void ParseArgument(string option, string[] args, ref int i, Arguments result)
+		{
+			if ("--recursive" == option || "-r" == option)
+			{
+				result.Recursive = true;
+			}
+			else if ("--monitor" == option || "-m" == option)
+			{
+				result.Monitor = true;
+			}
+			else if ("--quiet" == option || "-q" == option)
+			{
+				result.Quiet = true;
+			}
+			else if ("--event" == option || "-e" == option)
+			{
+				result.Events = new List<string>(Value(args, ++i, "event").Split(','));
+			}
+			else if ("--format" == option)
+			{
+				result.Format = TokenizeFormat(Value(args, ++i, "format"));
+			}
+			else if (Directory.Exists(option))
+			{
+				result.Paths.Add(System.IO.Path.GetFullPath(option));
+			}
 		}
 
 		/// Creates a new argument parser and parses the arguments
 		public Arguments Parse(string[] args)
 		{
 			var result = new Arguments();
-			for (var i= 0; i < args.Length; i++)
+			for (var i = 0; i < args.Length; i++)
 			{
-				if ("--recursive".Equals(args[i]) || "-r".Equals(args[i]))
+				if (!args[i].StartsWith("--") && args[i].StartsWith("-") && args[i].Length > 2)
 				{
-					result.Recursive = true;
-				} 
-				else if ("--monitor".Equals(args[i]) || "-m".Equals(args[i]))
-				{
-					result.Monitor = true;
-				}	
-				else if ("--quiet".Equals(args[i]) || "-q".Equals(args[i]))
-				{
-					result.Quiet = true;
+					string options = args[i];
+					for (var j = 1; j < options.Length; j++)
+						ParseArgument("-" + options.Substring(j, 1), args, ref i, result);
 				}
-				else if ("--event".Equals(args[i]) || "-e".Equals(args[i]))
+				else
 				{
-					result.Events = new List<string>(Value(args, ++i, "event").Split(','));
-				}
-				else if ("--format".Equals(args[i]))
-				{
-					result.Format = TokenizeFormat(Value(args, ++i, "format"));
-				}
-				else 
-				{
-					result.Path = System.IO.Path.GetFullPath(args[i]);
+					ParseArgument(args[i], args, ref i, result);
 				}
 			}
 			return result;
@@ -77,7 +93,7 @@ namespace Net.XpForge.INotify
 		/// Usage
 		public void PrintUsage(string name, TextWriter writer)
 		{
-			writer.WriteLine("Usage: " + name + " [options] path");
+			writer.WriteLine("Usage: " + name + " [options] path [...]");
 			writer.WriteLine();
 			writer.WriteLine("Options:");
 			writer.WriteLine("-r/--recursive:  Recursively watch all files and subdirectories inside path");
