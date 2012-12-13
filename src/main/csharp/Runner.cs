@@ -20,6 +20,7 @@ namespace Net.XpForge.INotify
 		private List<Thread> _threads = new List<Thread>();
 		private bool _eventOccured = false;
 		private Semaphore _semaphore = new Semaphore(0, 1);
+		private Mutex _mutex = new Mutex();
 		private Arguments _args = null;
 
 		static Runner()
@@ -101,12 +102,11 @@ namespace Net.XpForge.INotify
 				while (true)
 				{
 					var e = w.WaitForChanged(changes);
+					_mutex.WaitOne();
 					if (_eventOccured)
-						break;
-					if (!_args.Monitor)
 					{
-						_eventOccured = true;
-						_semaphore.Release();
+						_mutex.ReleaseMutex();
+						break;
 					}
 					if (WatcherChangeTypes.Renamed.Equals(e.ChangeType))
 					{
@@ -117,6 +117,12 @@ namespace Net.XpForge.INotify
 					{
 						Output(Console.Out, _args.Format, w, Changes[e.ChangeType], e.Name);
 					}
+					if (!_args.Monitor)
+					{
+						_eventOccured = true;
+						_semaphore.Release();
+					}
+					_mutex.ReleaseMutex();
 				}
 			}
 		}
