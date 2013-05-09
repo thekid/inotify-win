@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Net.XpForge.INotify
 {
@@ -64,6 +65,14 @@ namespace Net.XpForge.INotify
 			{
 				result.Format = TokenizeFormat(Value(args, ++i, "format"));
 			}
+			else if ("--exclude" == option)
+			{
+				result.Exclude = new Regex(Value(args, ++i, "exclude"));
+			}
+			else if ("--excludei" == option)
+			{
+				result.Exclude = new Regex(Value(args, ++i, "exclude"), RegexOptions.IgnoreCase);
+			}
 			else if (Directory.Exists(option))
 			{
 				result.Paths.Add(System.IO.Path.GetFullPath(option));
@@ -101,6 +110,8 @@ namespace Net.XpForge.INotify
 			writer.WriteLine("-q/--quiet:      Do not output information about actions");
 			writer.WriteLine("-e/--event list: Which events (create, modify, delete, move) to watch, comma-separated. Default: all");
 			writer.WriteLine("--format format: Format string for output.");
+			writer.WriteLine("--exclude:       Do not process any events whose filename matches the specified regex");
+			writer.WriteLine("--excludei:      Ditto, case-insensitive");
 			writer.WriteLine();
 			writer.WriteLine("Formats:");
 			writer.WriteLine("%e             : Event name");

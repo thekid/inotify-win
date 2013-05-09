@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Net.XpForge.INotify
 {
@@ -26,5 +27,6 @@ namespace Net.XpForge.INotify
 			get { return this._Events; }
 			set { this._Events = value; }
 		}
+		public Regex Exclude { get; set; }
 	}
 }

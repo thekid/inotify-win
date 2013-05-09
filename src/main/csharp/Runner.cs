@@ -108,6 +108,10 @@ namespace Net.XpForge.INotify
 						_mutex.ReleaseMutex();
 						break;
 					}
+					if (null != _args.Exclude && _args.Exclude.IsMatch(e.Name))
+					{
+						continue;
+					}
 					if (WatcherChangeTypes.Renamed.Equals(e.ChangeType))
 					{
 						Output(Console.Out, _args.Format, w, Change.MOVE_FROM, e.OldName);
