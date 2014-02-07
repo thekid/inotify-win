@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Net.XpForge.INotify
+namespace De.Thekid.INotify
 {
 
 	public class Arguments

@@ -3,7 +3,7 @@ using System.Threading;
 using System.IO;
 using System.Collections.Generic;
 
-namespace Net.XpForge.INotify
+namespace De.Thekid.INotify
 {
 	// List of possible changes
 	public enum Change

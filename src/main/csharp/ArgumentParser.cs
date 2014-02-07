@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Net.XpForge.INotify
+namespace De.Thekid.INotify
 {
 
 	/// See also <a href="http://linux.die.net/man/1/inotifywait">inotifywait(1) - Linux man page</a>
@@ -89,7 +89,9 @@ namespace Net.XpForge.INotify
 				{
 					string options = args[i];
 					for (var j = 1; j < options.Length; j++)
+					{
 						ParseArgument("-" + options.Substring(j, 1), args, ref i, result);
+					}
 				}
 				else
 				{
