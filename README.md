@@ -4,7 +4,17 @@ A port of the **inotifywait** tool for Windows, see https://github.com/rvoicilas
 
 Compiling
 =========
-Run `make` in this directory. This will create the executable, `inotifywait.exe`.
+If you have Cygwin installed, just run `make` in this directory. This will create the executable, `inotifywait.exe`.
+
+Manual complilation goes as follows:
+
+```sh
+> %WINDIR%\Microsoft.NET\Framework\v4.0.30319\csc.exe /target:exe /out:inotifywait.exe src\main\csharp\*.cs
+Microsoft (R) Visual C# 2010 Compiler Version 4.0.30319.1
+Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
+
+> 
+```
 
 Usage
 =====
