@@ -9,11 +9,11 @@ If you have Cygwin installed, just run `make` in this directory. This will creat
 Manual complilation goes as follows:
 
 ```sh
-> %WINDIR%\Microsoft.NET\Framework\v4.0.30319\csc.exe /target:exe /out:inotifywait.exe src\main\csharp\*.cs
+$ %WINDIR%\Microsoft.NET\Framework\v4.0.30319\csc.exe /target:exe /out:inotifywait.exe src\main\csharp\*.cs
 Microsoft (R) Visual C# 2010 Compiler Version 4.0.30319.1
 Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
 
-> 
+$ 
 ```
 
 Usage
@@ -21,7 +21,7 @@ Usage
 The command line arguments are similar to the original one's:
 
 ```sh
-$ ./inotifywait.exe
+$ inotifywait.exe
 Usage: inotifywait [options] path [...]
 
 Options:
