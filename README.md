@@ -30,6 +30,8 @@ Options:
 -q/--quiet:      Do not output information about actions
 -e/--event list: Which events (create, modify, delete, move) to watch, comma-separated. Default: all
 --format format: Format string for output.
+--exclude:       Do not process any events whose filename matches the specified regex
+--excludei:      Ditto, case-insensitive
 
 Formats:
 %e             : Event name
