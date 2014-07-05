@@ -73,6 +73,22 @@ namespace De.Thekid.INotify
 			{
 				result.Exclude = new Regex(Value(args, ++i, "exclude"), RegexOptions.IgnoreCase);
 			}
+			else if (option.StartsWith("--event="))
+			{
+				result.Events = new List<string>(option.Split(new Char[]{'='}, 2)[1].Split(','));
+			}
+			else if (option.StartsWith("--format="))
+			{
+				result.Format = TokenizeFormat(option.Split(new Char[]{'='}, 2)[1]);
+			}
+			else if (option.StartsWith("--exclude="))
+			{
+				result.Exclude = new Regex(option.Split(new Char[]{'='}, 2)[1]);
+			}
+			else if (option.StartsWith("--excludei="))
+			{
+				result.Exclude = new Regex(option.Split(new Char[]{'='}, 2)[1], RegexOptions.IgnoreCase);
+			}
 			else if (Directory.Exists(option))
 			{
 				result.Paths.Add(System.IO.Path.GetFullPath(option));
