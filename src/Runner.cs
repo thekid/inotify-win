@@ -46,19 +46,18 @@ namespace De.Thekid.INotify
 		{
 			foreach (var token in tokens)
 			{
+				var path = Path.Combine(source.Path, name);
 				switch (token[0])
 				{
 					case 'e':
-						var path = Path.Combine(source.Path, name);
 						writer.Write(type);
-
 						if (Directory.Exists(path))
 						{
 							writer.Write(",ISDIR");
 						}
 						break;
-					case 'f': writer.Write(name); break;
-					case 'w': writer.Write(source.Path); break;
+					case 'f': writer.Write(Path.GetFileName(path)); break;
+					case 'w': writer.Write(Path.Combine(source.Path, Path.GetDirectoryName(path))); break;
 					case 'T': writer.Write(DateTime.Now); break;
 					default: writer.Write(token); break;
 				}
