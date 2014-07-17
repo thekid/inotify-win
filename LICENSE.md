@@ -1,10 +1,10 @@
-inotify-win : LICENCE
+inotify-win : LICENSE
 ========================================================================
 
-The XP framework is published under the BSD licence. For reference, see
+The XP framework is published under the BSD license. For reference, see
 http://www.opensource.org/licenses/bsd-license.php
 
-This is the licence's text:
+This is the license's text:
 ```
 Copyright (c) 2012-2014, Timm Friebe
 All rights reserved.
