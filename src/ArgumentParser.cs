@@ -27,13 +27,15 @@ namespace De.Thekid.INotify
 			var tokens = arg.Split(new char[]{ '%' });
 			foreach (var token in tokens)
 			{
-				if (token.Length == 0)
-					continue;
+				if (token.Length == 0) continue;
+
 				if ("efwT".IndexOf(token[0]) != -1)
 				{
 					result.Add(token[0].ToString());
 					if (token.Length > 1)
+					{
 						result.Add(token.Substring(1));
+					}
 				}
 				else
 				{
