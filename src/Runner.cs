@@ -8,7 +8,7 @@ namespace De.Thekid.INotify
 	// List of possible changes
 	public enum Change
 	{
-		CREATE, MODIFY, DELETE, MOVE_FROM, MOVE_TO
+		CREATE, MODIFY, DELETE, MOVED_FROM, MOVED_TO
 	}
 
 	/// Main class
@@ -115,8 +115,8 @@ namespace De.Thekid.INotify
 					}
 					if (WatcherChangeTypes.Renamed.Equals(e.ChangeType))
 					{
-						Output(Console.Out, _args.Format, w, Change.MOVE_FROM, e.OldName);
-						Output(Console.Out, _args.Format, w, Change.MOVE_TO, e.Name);
+						Output(Console.Out, _args.Format, w, Change.MOVED_FROM, e.OldName);
+						Output(Console.Out, _args.Format, w, Change.MOVED_TO, e.Name);
 					}
 					else
 					{
