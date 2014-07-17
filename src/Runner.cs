@@ -110,6 +110,7 @@ namespace De.Thekid.INotify
 					}
 					if (null != _args.Exclude && _args.Exclude.IsMatch(e.Name))
 					{
+						_mutex.ReleaseMutex();
 						continue;
 					}
 					if (WatcherChangeTypes.Renamed.Equals(e.ChangeType))
