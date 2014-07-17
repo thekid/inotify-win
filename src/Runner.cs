@@ -108,7 +108,7 @@ namespace De.Thekid.INotify
 						_mutex.ReleaseMutex();
 						break;
 					}
-					if (null != _args.Exclude && _args.Exclude.IsMatch(e.Name))
+					if (null != _args.Exclude && _args.Exclude.IsMatch(System.IO.Path.GetFullPath(e.Name)))
 					{
 						_mutex.ReleaseMutex();
 						continue;
