@@ -48,7 +48,15 @@ namespace De.Thekid.INotify
 			{
 				switch (token[0])
 				{
-					case 'e': writer.Write(type); break;
+					case 'e':
+						var path = Path.Combine(source.Path, name);
+						writer.Write(type);
+
+						if (Directory.Exists(path))
+						{
+							writer.Write(",ISDIR");
+						}
+						break;
 					case 'f': writer.Write(name); break;
 					case 'w': writer.Write(source.Path); break;
 					case 'T': writer.Write(DateTime.Now); break;
