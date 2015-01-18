@@ -4,10 +4,9 @@ ifeq ($(OS),Windows_NT)
 else
         CSC?=csc
 endif
-CSC_OPT=/nologo /target:exe
 
 inotifywait.exe: src/*.cs
-	$(CSC) $(CSC_OPT) /out:$@ src\\*.cs
+	$(CSC) /nologo /target:exe /out:$@ src\\*.cs
 
 clean:
 	-rm inotifywait.exe
