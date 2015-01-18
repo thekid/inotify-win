@@ -18,9 +18,9 @@ namespace De.Thekid.INotify
 		protected static Dictionary<WatcherChangeTypes, Change> Changes = new Dictionary<WatcherChangeTypes, Change>();
 
 		private List<Thread> _threads = new List<Thread>();
-		private bool _eventOccured = false;
-		private Semaphore _semaphore = new Semaphore(0, 1);
-		private Mutex _mutex = new Mutex();
+		private bool _stopMonitoring = false;
+		private ManualResetEventSlim _stopMonitoringEvent;
+		private object _notificationReactionLock = new object();
 		private Arguments _args = null;
 
 		static Runner()
@@ -39,6 +39,51 @@ namespace De.Thekid.INotify
 		protected void OnWatcherError(object source, ErrorEventArgs e)
 		{
 			Console.Error.WriteLine("*** {0}", e.GetException());
+		}
+
+		private void OnWatcherNotification(object sender, FileSystemEventArgs e)
+		{
+		    FileSystemWatcher w = (FileSystemWatcher)sender;
+		    HandleNotification(w, e, () => Output(Console.Out, _args.Format, w, Changes[e.ChangeType], e.Name));
+		}
+		
+		private void OnRenameNotification(object sender, RenamedEventArgs e)
+		{
+		    FileSystemWatcher w = (FileSystemWatcher)sender;
+		    HandleNotification(w, e, () =>
+		    {
+		        Output(Console.Out, _args.Format, w, Change.MOVED_FROM, e.OldName);
+		        Output(Console.Out, _args.Format, w, Change.MOVED_TO, e.Name);
+		    });
+		}
+		
+		private void HandleNotification(FileSystemWatcher sender, FileSystemEventArgs e, Action outputAction)
+		{
+		    FileSystemWatcher w = (FileSystemWatcher)sender;
+		    // Lock so we don't output more than one change if we were only supposed to watch for one.
+		    // And to serialize access to the console
+		    lock (_notificationReactionLock)
+		    {
+		        // if only looking for one change and another thread beat us to it, return
+		        if (!_args.Monitor && _stopMonitoring)
+		        {
+		            return;
+		        }
+		
+		        if (null != _args.Exclude && _args.Exclude.IsMatch(e.FullPath))
+		        {
+		            return;
+		        }
+		
+		        outputAction();
+		
+		        // If only looking for one change, signal to stop
+		        if (!_args.Monitor)
+		        {
+		            _stopMonitoring = true;
+		            _stopMonitoringEvent.Set();
+		        }
+		    }
 		}
 
 		/// Output method
@@ -79,18 +124,22 @@ namespace De.Thekid.INotify
 				if (_args.Events.Contains("create"))
 				{
 					changes |= WatcherChangeTypes.Created;
+					w.Created += new FileSystemEventHandler(OnWatcherNotification);
 				}
 				if (_args.Events.Contains("modify"))
 				{
 					changes |= WatcherChangeTypes.Changed;
+					w.Changed += new FileSystemEventHandler(OnWatcherNotification);
 				}
 				if (_args.Events.Contains("delete"))
 				{
 					changes |= WatcherChangeTypes.Deleted;
+					w.Deleted += new FileSystemEventHandler(OnWatcherNotification);
 				}
 				if (_args.Events.Contains("move"))
 				{
 					changes |= WatcherChangeTypes.Renamed;
+					w.Renamed += new RenamedEventHandler(OnRenameNotification);
 				}
 
 				// Main loop
@@ -106,56 +155,30 @@ namespace De.Thekid.INotify
 					);
 				}
 				w.EnableRaisingEvents = true;
-				while (true)
-				{
-					var e = w.WaitForChanged(changes);
-					_mutex.WaitOne();
-					if (_eventOccured)
-					{
-						_mutex.ReleaseMutex();
-						break;
-					}
-					if (null != _args.Exclude && _args.Exclude.IsMatch(System.IO.Path.GetFullPath(e.Name)))
-					{
-						_mutex.ReleaseMutex();
-						continue;
-					}
-					if (WatcherChangeTypes.Renamed.Equals(e.ChangeType))
-					{
-						Output(Console.Out, _args.Format, w, Change.MOVED_FROM, e.OldName);
-						Output(Console.Out, _args.Format, w, Change.MOVED_TO, e.Name);
-					}
-					else
-					{
-						Output(Console.Out, _args.Format, w, Changes[e.ChangeType], e.Name);
-					}
-					if (!_args.Monitor)
-					{
-						_eventOccured = true;
-						_semaphore.Release();
-					}
-					_mutex.ReleaseMutex();
-				}
+				_stopMonitoringEvent.Wait();
 			}
 		}
 
 		/// Entry point
 		public int Run()
 		{
-			foreach (var path in _args.Paths)
+			using (_stopMonitoringEvent = new ManualResetEventSlim(initialState: false))
 			{
-				Thread t = new Thread(new ParameterizedThreadStart(Processor));
-				t.Start(path);
-				_threads.Add(t);
+			    foreach (var path in _args.Paths)
+			    {
+			        Thread t = new Thread(new ParameterizedThreadStart(Processor));
+			        t.Start(path);
+			        _threads.Add(t);
+			    }
+			    _stopMonitoringEvent.Wait();
+			    foreach (var thread in _threads)
+			    {
+			        if (thread.IsAlive)
+			            thread.Abort();
+			        thread.Join();
+			    }
+			    return 0;
 			}
-			_semaphore.WaitOne();
-			foreach (var thread in _threads)
-			{
-				if (thread.IsAlive)
-					thread.Abort();
-				thread.Join();
-			}
-			return 0;
 		}
 
 		/// Entry point method
