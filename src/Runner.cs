@@ -110,6 +110,12 @@ namespace De.Thekid.INotify
 			writer.WriteLine();
 		}
 
+		public void Stop(object data) {
+			while(Console.ReadLine() != null){ };
+			_stopMonitoring = true;
+			_stopMonitoringEvent.Set();
+		}
+
 		public void Processor(object data) {
 			string path = (string)data;
 			using (var w = new FileSystemWatcher {
@@ -170,6 +176,10 @@ namespace De.Thekid.INotify
 			        t.Start(path);
 			        _threads.Add(t);
 			    }
+
+			    Thread stop = new Thread(new ParameterizedThreadStart(Stop));
+			    stop.Start("");
+
 			    _stopMonitoringEvent.Wait();
 			    foreach (var thread in _threads)
 			    {
