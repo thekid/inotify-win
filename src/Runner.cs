@@ -160,7 +160,8 @@ namespace De.Thekid.INotify
             }
         }
 
-        public void StdInOpen() {
+        public void StdInOpen()
+        {
             while (Console.ReadLine() != null);
             _stopMonitoring = true;
             _stopMonitoringEvent.Set();
