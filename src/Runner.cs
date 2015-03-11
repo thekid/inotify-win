@@ -43,13 +43,13 @@ namespace De.Thekid.INotify
 
         private void OnWatcherNotification(object sender, FileSystemEventArgs e)
         {
-            FileSystemWatcher w = (FileSystemWatcher)sender;
-            HandleNotification(w, e, () => Output(Console.Out, _args.Format, w, Changes[e.ChangeType], e.Name));
+            var w = (FileSystemWatcher)sender;
+            HandleNotification((FileSystemWatcher)sender, e, () => Output(Console.Out, _args.Format, w, Changes[e.ChangeType], e.Name));
         }
         
         private void OnRenameNotification(object sender, RenamedEventArgs e)
         {
-            FileSystemWatcher w = (FileSystemWatcher)sender;
+            var w = (FileSystemWatcher)sender;
             HandleNotification(w, e, () =>
             {
                 Output(Console.Out, _args.Format, w, Change.MOVED_FROM, e.OldName);
@@ -59,7 +59,6 @@ namespace De.Thekid.INotify
         
         private void HandleNotification(FileSystemWatcher sender, FileSystemEventArgs e, Action outputAction)
         {
-            FileSystemWatcher w = (FileSystemWatcher)sender;
             // Lock so we don't output more than one change if we were only supposed to watch for one.
             // And to serialize access to the console
             lock (_notificationReactionLock)
@@ -112,6 +111,7 @@ namespace De.Thekid.INotify
 
         public void Processor(object data) {
             string path = (string)data;
+
             using (var w = new FileSystemWatcher {
                 Path = path,
                 IncludeSubdirectories = _args.Recursive,
@@ -171,10 +171,10 @@ namespace De.Thekid.INotify
                     _threads.Add(t);
                 }
                 _stopMonitoringEvent.Wait();
+
                 foreach (var thread in _threads)
                 {
-                    if (thread.IsAlive)
-                        thread.Abort();
+                    if (thread.IsAlive) thread.Abort();
                     thread.Join();
                 }
                 return 0;
