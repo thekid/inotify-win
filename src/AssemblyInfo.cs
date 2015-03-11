@@ -2,7 +2,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-
 [assembly: AssemblyTitle("https://github.com/thekid/inotify-win")]
 [assembly: AssemblyDescription("A port of the inotifywait tool for Windows")]
 [assembly: AssemblyConfiguration("")]
@@ -11,6 +10,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © 2012 - 2015 Timm Friebe")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("1.5.1.0")]
+[assembly: AssemblyVersion("1.5.1.1")]
 [assembly: ComVisible(false)]
 [assembly: Guid("4254314b-ae21-4e2f-ba52-d6f3d83a86b5")]
