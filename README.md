@@ -42,4 +42,4 @@ Formats:
 
 Known issues
 ------------
-When moving files inside the directory, not all events are reported. See [issue #7](https://github.com/thekid/inotify-win/issues/7) for an explanation. **Pull requests welcome!**
+When moving files, not all events are reported consistently with the original. See [issue #7](https://github.com/thekid/inotify-win/issues/7) for an explanation. **Pull requests welcome!**
