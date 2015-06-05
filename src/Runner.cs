@@ -179,9 +179,10 @@ namespace De.Thekid.INotify
                     _threads.Add(t);
                 }
 
-                var s = new Thread(new ThreadStart(StdInOpen));
-                s.Start();
-                _threads.Add(s);
+                var stdInOpen = new Thread(new ThreadStart(StdInOpen));
+                stdInOpen.IsBackground = true;
+                stdInOpen.Start();
+
                 _stopMonitoringEvent.Wait();
 
                 foreach (var thread in _threads)
