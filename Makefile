@@ -6,7 +6,7 @@ else
 endif
 
 inotifywait.exe: src/*.cs
-	$(CSC) /nologo /target:exe /out:$@ src\\*.cs
+	$(CSC) //nologo //target:exe //out:$@ src\\*.cs
 
 clean:
 	-rm inotifywait.exe
