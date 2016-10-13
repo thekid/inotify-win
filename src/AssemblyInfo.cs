@@ -10,6 +10,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © 2012 - 2016 Timm Friebe")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("1.6.1.1")]
+[assembly: AssemblyVersion("1.7.0.0")]
 [assembly: ComVisible(false)]
 [assembly: Guid("4254314b-ae21-4e2f-ba52-d6f3d83a86b5")]
