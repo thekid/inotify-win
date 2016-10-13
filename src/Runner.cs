@@ -147,12 +147,11 @@ namespace De.Thekid.INotify
                 if (!_args.Quiet)
                 {
                     Console.Error.WriteLine(
-                        "===> {0} for {1} in {2}{3} for {4}",
+                        "===> {0} {1}{2} for {3}",
                         _args.Monitor ? "Monitoring" : "Watching",
-                        changes,
                         path,
                         _args.Recursive ? " -r" : "",
-                        String.Join(", ", _args.Events.ToArray())
+                        String.Join(", ", _args.Events)
                     );
                 }
                 w.EnableRaisingEvents = true;

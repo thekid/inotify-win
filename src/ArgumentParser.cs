@@ -61,7 +61,7 @@ namespace De.Thekid.INotify
             }
             else if ("--event" == option || "-e" == option)
             {
-                result.Events = new List<string>(Value(args, ++i, "event").Split(','));
+                result.AddEvents(Value(args, ++i, "event").Split(','));
             }
             else if ("--format" == option)
             {
@@ -77,7 +77,7 @@ namespace De.Thekid.INotify
             }
             else if (option.StartsWith("--event="))
             {
-                result.Events = new List<string>(option.Split(new Char[]{'='}, 2)[1].Split(','));
+                result.AddEvents(option.Split(new Char[]{'='}, 2)[1].Split(','));
             }
             else if (option.StartsWith("--format="))
             {
