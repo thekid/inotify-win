@@ -91,7 +91,7 @@ namespace De.Thekid.INotify
             {
                 result.Exclude = new Regex(option.Split(new Char[]{'='}, 2)[1], RegexOptions.IgnoreCase);
             }
-            else if (Directory.Exists(option))
+            else if (Directory.Exists(option) || File.Exists(option))
             {
                 result.Paths.Add(System.IO.Path.GetFullPath(option));
             }
