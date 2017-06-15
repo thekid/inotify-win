@@ -118,7 +118,7 @@ namespace De.Thekid.INotify
             if (File.Exists(path))
             {
                 fileName = Path.GetFileName(path);
-                path = path.Substring(0, path.Length - fileName.Length);
+                path = Path.GetDirectoryName(path)
             }
 
             using (var w = new FileSystemWatcher {
