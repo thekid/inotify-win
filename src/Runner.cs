@@ -113,10 +113,18 @@ namespace De.Thekid.INotify
         {
             string path = (string)data;
 
+            string fileName = "*.*";
+
+            if (File.Exists(path))
+            {
+                fileName = Path.GetFileName(path);
+                path = path.Substring(0, path.Length - fileName.Length);
+            }
+
             using (var w = new FileSystemWatcher {
                 Path = path,
                 IncludeSubdirectories = _args.Recursive,
-                Filter = "*.*"
+                Filter = fileName
             }) {
                 w.Error += new ErrorEventHandler(OnWatcherError);
 
@@ -147,11 +155,12 @@ namespace De.Thekid.INotify
                 if (!_args.Quiet)
                 {
                     Console.Error.WriteLine(
-                        "===> {0} {1}{2} for {3}",
+                        "===> {0} {1}{2}{4} for {3}",
                         _args.Monitor ? "Monitoring" : "Watching",
                         path,
                         _args.Recursive ? " -r" : "",
-                        String.Join(", ", _args.Events)
+                        String.Join(", ", _args.Events),
+                        fileName
                     );
                 }
                 w.EnableRaisingEvents = true;
