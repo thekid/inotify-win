@@ -75,6 +75,10 @@ namespace De.Thekid.INotify
             {
                 result.Exclude = new Regex(Value(args, ++i, "exclude"), RegexOptions.IgnoreCase);
             }
+            else if ("--excludedirectories" == option || "-d" == option)
+            {
+                result.ExcludeDirectories = true;
+            }
             else if (option.StartsWith("--event="))
             {
                 result.AddEvents(option.Split(new Char[]{'='}, 2)[1].Split(','));

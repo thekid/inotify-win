@@ -27,6 +27,9 @@ namespace De.Thekid.INotify
             set { format = value; }
         }
 
+        /// -d
+        public bool ExcludeDirectories { get; set; }
+
         /// --exclude[i]
         public Regex Exclude { get; set; }
 

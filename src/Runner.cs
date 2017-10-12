@@ -63,17 +63,20 @@ namespace De.Thekid.INotify
             // And to serialize access to the console
             lock (_notificationReactionLock)
             {
+                if (_args.ExcludeDirectories && Directory.Exists(e.FullPath))
+                {
+                    return;
+                }
                 // if only looking for one change and another thread beat us to it, return
                 if (!_args.Monitor && _stopMonitoring)
                 {
                     return;
                 }
-        
                 if (null != _args.Exclude && _args.Exclude.IsMatch(e.FullPath))
                 {
                     return;
                 }
-        
+                
                 outputAction();
         
                 // If only looking for one change, signal to stop
