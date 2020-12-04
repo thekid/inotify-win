@@ -168,13 +168,6 @@ namespace De.Thekid.INotify
             }
         }
 
-        public void StdInOpen()
-        {
-            while (Console.ReadLine() != null);
-            _stopMonitoring = true;
-            _stopMonitoringEvent.Set();
-        }
-
         /// Entry point
         public int Run()
         {
@@ -186,10 +179,6 @@ namespace De.Thekid.INotify
                     t.Start(path);
                     _threads.Add(t);
                 }
-
-                var stdInOpen = new Thread(new ThreadStart(StdInOpen));
-                stdInOpen.IsBackground = true;
-                stdInOpen.Start();
 
                 _stopMonitoringEvent.Wait();
 
