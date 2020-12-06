@@ -18,7 +18,6 @@ namespace De.Thekid.INotify
         protected static Dictionary<WatcherChangeTypes, Change> Changes = new Dictionary<WatcherChangeTypes, Change>();
 
         private List<Thread> _threads = new List<Thread>();
-        private bool _stopMonitoring = false;
         private ManualResetEventSlim _stopMonitoringEvent;
         private object _notificationReactionLock = new object();
         private Arguments _args = null;
@@ -64,7 +63,7 @@ namespace De.Thekid.INotify
             lock (_notificationReactionLock)
             {
                 // if only looking for one change and another thread beat us to it, return
-                if (!_args.Monitor && _stopMonitoring)
+                if (!_args.Monitor && _stopMonitoringEvent.IsSet)
                 {
                     return;
                 }
@@ -79,7 +78,6 @@ namespace De.Thekid.INotify
                 // If only looking for one change, signal to stop
                 if (!_args.Monitor)
                 {
-                    _stopMonitoring = true;
                     _stopMonitoringEvent.Set();
                 }
             }
@@ -168,28 +166,19 @@ namespace De.Thekid.INotify
             }
         }
 
-        public void StdInOpen()
-        {
-            while (Console.ReadLine() != null);
-            _stopMonitoring = true;
-            _stopMonitoringEvent.Set();
-        }
-
         /// Entry point
         public int Run()
         {
             using (_stopMonitoringEvent = new ManualResetEventSlim(initialState: false))
             {
+                Console.CancelKeyPress += delegate { _stopMonitoringEvent.Set(); };
+
                 foreach (var path in _args.Paths)
                 {
                     var t = new Thread(new ParameterizedThreadStart(Processor));
                     t.Start(path);
                     _threads.Add(t);
                 }
-
-                var stdInOpen = new Thread(new ThreadStart(StdInOpen));
-                stdInOpen.IsBackground = true;
-                stdInOpen.Start();
 
                 _stopMonitoringEvent.Wait();
 
