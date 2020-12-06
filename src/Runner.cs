@@ -171,6 +171,8 @@ namespace De.Thekid.INotify
         {
             using (_stopMonitoringEvent = new ManualResetEventSlim(initialState: false))
             {
+                Console.CancelKeyPress += delegate { _stopMonitoringEvent.Set(); };
+
                 foreach (var path in _args.Paths)
                 {
                     var t = new Thread(new ParameterizedThreadStart(Processor));
