@@ -6,7 +6,7 @@ http://www.opensource.org/licenses/bsd-license.php
 
 This is the license's text:
 ```
-Copyright (c) 2012-2021, Timm Friebe
+Copyright (c) 2012-2022, Timm Friebe
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
