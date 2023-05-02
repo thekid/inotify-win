@@ -95,6 +95,14 @@ namespace De.Thekid.INotify
             {
                 result.Paths.Add(System.IO.Path.GetFullPath(option));
             }
+            else if (option.StartsWith("-"))
+            {
+                throw new ArgumentException(string.Format("Unknown option: `{0}`", option));
+            }
+            else
+            {
+                throw new ArgumentException(string.Format("Path does not exist: `{0}`", option));
+            }
         }
 
         /// Creates a new argument parser and parses the arguments
