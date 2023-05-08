@@ -68,11 +68,14 @@ namespace De.Thekid.INotify
                     return;
                 }
         
-                if (null != _args.Exclude && _args.Exclude.IsMatch(e.FullPath))
+                if (
+                    (null != _args.Exclude && _args.Exclude.IsMatch(e.FullPath)) ||
+                    (null != _args.Include && !_args.Include.IsMatch(e.FullPath))
+                )
                 {
                     return;
                 }
-        
+
                 outputAction();
         
                 // If only looking for one change, signal to stop
