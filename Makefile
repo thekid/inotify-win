@@ -7,9 +7,9 @@ endif
 
 inotifywait.exe: src/*.cs
         ifneq (,$(findstring CYGWIN,$(shell uname -s)))
-		$(CSC) '/nologo' '/target:exe' '/out:$@' 'src\\*.cs'
+		$(CSC) '/o' '/nologo' '/target:exe' '/out:$@' 'src\\*.cs'
         else
-		$(CSC) //nologo //target:exe //out:$@ src\\*.cs
+		$(CSC) //o //nologo //target:exe //out:$@ src\\*.cs
         endif
 
 clean:
