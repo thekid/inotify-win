@@ -28,6 +28,8 @@ Options:
 --format format: Format string for output.
 --exclude:       Do not process any events whose filename matches the specified regex
 --excludei:      Ditto, case-insensitive
+--include:       Only process events whose filename matches the specified regex
+--includei:      Ditto, case-insensitive
 
 Formats:
 %e             : Event name
