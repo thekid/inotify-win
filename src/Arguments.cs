@@ -27,6 +27,9 @@ namespace De.Thekid.INotify
             set { format = value; }
         }
 
+        /// --include[i]
+        public Regex Include { get; set; }
+
         /// --exclude[i]
         public Regex Exclude { get; set; }
 

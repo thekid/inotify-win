@@ -75,6 +75,14 @@ namespace De.Thekid.INotify
             {
                 result.Exclude = new Regex(Value(args, ++i, "exclude"), RegexOptions.IgnoreCase);
             }
+            else if ("--include" == option)
+            {
+                result.Include = new Regex(Value(args, ++i, "include"));
+            }
+            else if ("--includei" == option)
+            {
+                result.Include = new Regex(Value(args, ++i, "include"), RegexOptions.IgnoreCase);
+            }
             else if (option.StartsWith("--event="))
             {
                 result.AddEvents(option.Split(new Char[]{'='}, 2)[1].Split(','));
@@ -90,6 +98,14 @@ namespace De.Thekid.INotify
             else if (option.StartsWith("--excludei="))
             {
                 result.Exclude = new Regex(option.Split(new Char[]{'='}, 2)[1], RegexOptions.IgnoreCase);
+            }
+            else if (option.StartsWith("--include="))
+            {
+                result.Include = new Regex(option.Split(new Char[]{'='}, 2)[1]);
+            }
+            else if (option.StartsWith("--includei="))
+            {
+                result.Include = new Regex(option.Split(new Char[]{'='}, 2)[1], RegexOptions.IgnoreCase);
             }
             else if (Directory.Exists(option) || File.Exists(option))
             {
@@ -140,6 +156,8 @@ namespace De.Thekid.INotify
             writer.WriteLine("--format format: Format string for output.");
             writer.WriteLine("--exclude:       Do not process any events whose filename matches the specified regex");
             writer.WriteLine("--excludei:      Ditto, case-insensitive");
+            writer.WriteLine("--include:       Only process events whose filename matches the specified regex");
+            writer.WriteLine("--includei:      Ditto, case-insensitive");
             writer.WriteLine();
             writer.WriteLine("Formats:");
             writer.WriteLine("%e             : Event name");
