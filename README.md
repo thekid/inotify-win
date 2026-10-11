@@ -1,14 +1,12 @@
 # inotify-win
 A port of the **inotifywait** tool for Windows, see https://github.com/rvoicilas/inotify-tools
 
-## Compiling
-If you have Cygwin installed, just run `sh build.sh` in this directory. This will create the executable, `inotifywait.exe`.
+## Downloads
 
-Manual complilation goes as follows:
+There are two ways to download the current release binary:
 
-```sh
-$ %WINDIR%\Microsoft.NET\Framework\v4.0.30319\csc.exe /o /t:exe /out:inotifywait.exe src\*.cs
-```
+* From the releases page: https://github.com/thekid/inotify-win/releases
+* Via the community-contributed *WinGet* package: https://github.com/PolarGoose/inotifywait-for-Windows
 
 ## Usage
 The command line arguments are similar to the original one's:
@@ -40,6 +38,15 @@ Formats:
 
 ## Contributing
 Pull requests welcome ☺️
+
+### Compiling
+If you have Cygwin installed, just run `sh build.sh` in this directory. This will create the executable, `inotifywait.exe`.
+
+Manual complilation goes as follows:
+
+```sh
+$ %WINDIR%\Microsoft.NET\Framework\v4.0.30319\csc.exe /o /t:exe /out:inotifywait.exe src\*.cs
+```
 
 ### Known issues
 When moving files, not all events are reported consistently with the original. See [issue #7](https://github.com/thekid/inotify-win/issues/7) for an explanation.

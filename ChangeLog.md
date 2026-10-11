@@ -10,7 +10,6 @@ Contributors: @thekid, @Keith-S-Thompson
 * Added support for `-h` command line switch as an alias for `-?`
 * Refactored format string parsing, addressing issue reported in issue #44:
   *First character of --format argument is expanded*.
-  (@thekid)
 * Fixed issue #43: File path is displayed incorrectly
 
 ## 1.7.0 / 2023-05-13
