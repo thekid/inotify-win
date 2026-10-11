@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -145,11 +146,14 @@ namespace De.Thekid.INotify
         }
 
         /// Usage
-        public void PrintUsage(string name, TextWriter writer)
+        public void PrintUsage(TextWriter writer)
         {
-            writer.WriteLine(string.Format("Usage: {0} [options] path [...]", name));
+            var assembly = Assembly.GetExecutingAssembly().GetName();
+            writer.WriteLine(string.Format("Usage: {0} [options] path [...]", assembly.Name));
             writer.WriteLine();
             writer.WriteLine("Options:");
+            writer.WriteLine("-h/--help:       Shows this usage");
+            writer.WriteLine("-v/--version:    Shows version number");
             writer.WriteLine("-r/--recursive:  Recursively watch all files and subdirectories inside path");
             writer.WriteLine("-m/--monitor:    Keep running until killed (e.g. via Ctrl+C)");
             writer.WriteLine("-q/--quiet:      Do not output information about actions");
@@ -168,9 +172,18 @@ namespace De.Thekid.INotify
             writer.WriteLine("%%             : Percent sign");
         }
 
-        public void PrintError(string name, TextWriter writer, string message)
+        /// Version information
+        public void PrintVersion(TextWriter writer)
         {
-            writer.WriteLine(string.Format("{0} error: {1}", name, message));
+            var assembly = Assembly.GetExecutingAssembly().GetName();
+            writer.WriteLine(string.Format("{0} {1}", assembly.Name, assembly.Version));
+        }
+
+        /// Argument errors
+        public void PrintError(TextWriter writer, string message)
+        {
+            var assembly = Assembly.GetExecutingAssembly().GetName();
+            writer.WriteLine(string.Format("{0} error: {1}", assembly.Name, message));
         }
     }
 }

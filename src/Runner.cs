@@ -1,6 +1,6 @@
 using System;
-using System.Threading;
 using System.IO;
+using System.Threading;
 using System.Collections.Generic;
 
 namespace De.Thekid.INotify
@@ -197,7 +197,12 @@ namespace De.Thekid.INotify
             // Show usage if no args or standard "help" args are given
             if (0 == args.Length || args[0].Equals("-?") || args[0].Equals("-h") || args[0].Equals("--help"))
             {
-                p.PrintUsage(EXECUTABLE, Console.Error);
+                p.PrintUsage(Console.Error);
+                return 1;
+            }
+            else if (args[0].Equals("-v") || args[0].Equals("--version"))
+            {
+                p.PrintVersion(Console.Error);
                 return 1;
             }
 
@@ -207,7 +212,7 @@ namespace De.Thekid.INotify
             }
             catch (ArgumentException e)
             {
-                p.PrintError(EXECUTABLE, Console.Error, e.Message);
+                p.PrintError(Console.Error, e.Message);
                 return 255;
             }
         }
