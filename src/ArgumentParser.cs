@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 namespace De.Thekid.INotify
 {
 
-    /// See also <a href="http://linux.die.net/man/1/inotifywait">inotifywait(1) - Linux man page</a>
+    /// See also <a href="https://linux.die.net/man/1/inotifywait">inotifywait(1) - Linux man page</a>
     public class ArgumentParser
     {
 
