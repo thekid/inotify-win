@@ -146,7 +146,7 @@ namespace De.Thekid.INotify
         }
 
         /// Usage
-        public void PrintUsage(TextWriter writer)
+        public int PrintUsage(TextWriter writer)
         {
             var assembly = Assembly.GetExecutingAssembly().GetName();
             writer.WriteLine(string.Format("Usage: {0} [options] path [...]", assembly.Name));
@@ -170,20 +170,23 @@ namespace De.Thekid.INotify
             writer.WriteLine("%w             : Path name");
             writer.WriteLine("%T             : Current date and time");
             writer.WriteLine("%%             : Percent sign");
+            return 1;
         }
 
         /// Version information
-        public void PrintVersion(TextWriter writer)
+        public int PrintVersion(TextWriter writer)
         {
             var assembly = Assembly.GetExecutingAssembly().GetName();
             writer.WriteLine(string.Format("{0} {1}", assembly.Name, assembly.Version));
+            return 0;
         }
 
         /// Argument errors
-        public void PrintError(TextWriter writer, string message)
+        public int PrintError(TextWriter writer, string message)
         {
             var assembly = Assembly.GetExecutingAssembly().GetName();
             writer.WriteLine(string.Format("{0} error: {1}", assembly.Name, message));
+            return 255;
         }
     }
 }

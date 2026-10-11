@@ -197,13 +197,11 @@ namespace De.Thekid.INotify
             // Show usage if no args or standard "help" args are given
             if (0 == args.Length || args[0].Equals("-?") || args[0].Equals("-h") || args[0].Equals("--help"))
             {
-                p.PrintUsage(Console.Error);
-                return 1;
+                return p.PrintUsage(Console.Error);
             }
             else if (args[0].Equals("-v") || args[0].Equals("--version"))
             {
-                p.PrintVersion(Console.Error);
-                return 1;
+                return p.PrintVersion(Console.Error);
             }
 
             try
@@ -212,8 +210,7 @@ namespace De.Thekid.INotify
             }
             catch (ArgumentException e)
             {
-                p.PrintError(Console.Error, e.Message);
-                return 255;
+                return p.PrintError(Console.Error, e.Message);
             }
         }
     }
