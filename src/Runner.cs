@@ -202,8 +202,15 @@ namespace De.Thekid.INotify
                 return 1;
             }
 
-            // Run!
-            return new Runner(p.Parse(args)).Run();
+            try
+            {
+                return new Runner(p.Parse(args)).Run();
+            }
+            catch (ArgumentException e)
+            {
+                p.PrintError("inotifywait", Console.Error, e.Message);
+                return 255;
+            }
         }
     }
 }

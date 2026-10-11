@@ -32,13 +32,13 @@ namespace De.Thekid.INotify
 
                 if ('%' == format[p] && p + 1 < format.Length)
                 {
-                    var kind = format[p + 1];
-                    if ("efwT%".IndexOf(kind) == -1)
+                    var specifier = format[p + 1];
+                    if ("efwT%".IndexOf(specifier) == -1)
                     {
-                        throw new ArgumentException(string.Format("Unknown format specifier `{0}`", kind));
+                        throw new ArgumentException(string.Format("Unknown format specifier `{0}`", specifier));
                     }
 
-                    yield return new Format(kind);
+                    yield return new Format(specifier);
                     p++;
                 }
 
@@ -147,7 +147,7 @@ namespace De.Thekid.INotify
         /// Usage
         public void PrintUsage(string name, TextWriter writer)
         {
-            writer.WriteLine("Usage: " + name + " [options] path [...]");
+            writer.WriteLine(string.Format("Usage: {0} [options] path [...]", name));
             writer.WriteLine();
             writer.WriteLine("Options:");
             writer.WriteLine("-r/--recursive:  Recursively watch all files and subdirectories inside path");
@@ -166,6 +166,11 @@ namespace De.Thekid.INotify
             writer.WriteLine("%w             : Path name");
             writer.WriteLine("%T             : Current date and time");
             writer.WriteLine("%%             : Percent sign");
+        }
+
+        public void PrintError(string name, TextWriter writer, string message)
+        {
+            writer.WriteLine(string.Format("{0} error: {1}", name, message));
         }
     }
 }
