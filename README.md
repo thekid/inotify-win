@@ -4,7 +4,7 @@ A port of the **inotifywait** tool for Windows, see https://github.com/rvoicilas
 
 Compiling
 =========
-If you have Cygwin installed, just run `make` in this directory. This will create the executable, `inotifywait.exe`.
+If you have Cygwin installed, just run `sh build.sh` in this directory. This will create the executable, `inotifywait.exe`.
 
 Manual complilation goes as follows:
 
