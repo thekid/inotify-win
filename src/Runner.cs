@@ -156,12 +156,13 @@ namespace De.Thekid.INotify
                 if (!_args.Quiet)
                 {
                     Console.Error.WriteLine(
-                        "===> {0} {1}{2}{4} for {3}",
+                        "===> {0} {1}{2}{3}{4} for {5}",
                         _args.Monitor ? "Monitoring" : "Watching",
                         path,
+                        Path.DirectorySeparatorChar,
+                        fileName,
                         _args.Recursive ? " -r" : "",
-                        String.Join(", ", _args.Events),
-                        fileName
+                        String.Join(", ", _args.Events)
                     );
                 }
                 w.EnableRaisingEvents = true;
