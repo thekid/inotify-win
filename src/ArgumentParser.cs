@@ -36,7 +36,7 @@ namespace De.Thekid.INotify
                     var specifier = format[p + 1];
                     if ("efwT%".IndexOf(specifier) == -1)
                     {
-                        throw new ArgumentException(string.Format("Unknown format specifier `{0}`", specifier));
+                        throw new ArgumentException(string.Format("unknown format specifier `{0}`", specifier));
                     }
 
                     yield return new Format(specifier);
@@ -115,11 +115,11 @@ namespace De.Thekid.INotify
             }
             else if (option.StartsWith("-"))
             {
-                throw new ArgumentException(string.Format("Unknown option: `{0}`", option));
+                throw new ArgumentException(string.Format("unrecognized option: `{0}`", option));
             }
             else
             {
-                throw new ArgumentException(string.Format("Path does not exist: `{0}`", option));
+                throw new ArgumentException(string.Format("path does not exist: `{0}`", option));
             }
         }
 
@@ -185,7 +185,7 @@ namespace De.Thekid.INotify
         public int PrintError(TextWriter writer, string message)
         {
             var assembly = Assembly.GetExecutingAssembly().GetName();
-            writer.WriteLine(string.Format("{0} error: {1}", assembly.Name, message));
+            writer.WriteLine(string.Format("{0}: {1}", assembly.Name, message));
             return 255;
         }
     }
