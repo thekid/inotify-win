@@ -14,9 +14,8 @@ namespace De.Thekid.INotify
     /// Main class
     public class Runner
     {
-        // Mappings
-        protected static Dictionary<WatcherChangeTypes, Kind> Changes = new Dictionary<WatcherChangeTypes, Kind>();
-
+        private static string EXECUTABLE = "inotifywait";
+        private static Dictionary<WatcherChangeTypes, Kind> Changes = new Dictionary<WatcherChangeTypes, Kind>();
         private List<Thread> _threads = new List<Thread>();
         private ManualResetEventSlim _stopMonitoringEvent;
         private object _notificationReactionLock = new object();
@@ -198,7 +197,7 @@ namespace De.Thekid.INotify
             // Show usage if no args or standard "help" args are given
             if (0 == args.Length || args[0].Equals("-?") || args[0].Equals("--help"))
             {
-                p.PrintUsage("inotifywait", Console.Error);
+                p.PrintUsage(EXECUTABLE, Console.Error);
                 return 1;
             }
 
@@ -208,7 +207,7 @@ namespace De.Thekid.INotify
             }
             catch (ArgumentException e)
             {
-                p.PrintError("inotifywait", Console.Error, e.Message);
+                p.PrintError(EXECUTABLE, Console.Error, e.Message);
                 return 255;
             }
         }
