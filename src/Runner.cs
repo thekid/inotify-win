@@ -14,7 +14,6 @@ namespace De.Thekid.INotify
     /// Main class
     public class Runner
     {
-        private static string EXECUTABLE = "inotifywait";
         private static Dictionary<WatcherChangeTypes, Kind> Changes = new Dictionary<WatcherChangeTypes, Kind>();
         private List<Thread> _threads = new List<Thread>();
         private ManualResetEventSlim _stopMonitoringEvent;
