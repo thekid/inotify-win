@@ -195,7 +195,7 @@ namespace De.Thekid.INotify
             var p = new ArgumentParser();
 
             // Show usage if no args or standard "help" args are given
-            if (0 == args.Length || args[0].Equals("-?") || args[0].Equals("--help"))
+            if (0 == args.Length || args[0].Equals("-?") || args[0].Equals("-h") || args[0].Equals("--help"))
             {
                 p.PrintUsage(EXECUTABLE, Console.Error);
                 return 1;
