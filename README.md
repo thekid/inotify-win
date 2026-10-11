@@ -1,6 +1,6 @@
 # inotify-win
 
-[![Build status on GitHub](https://github.com/thekid/inotify-win/actions/workflows/build/badge.svg)](https://github.com/thekid/inotify-win/actions/workflows/build)
+[![Build status on GitHub](https://github.com/thekid/inotify-win/actions/workflows/build.yaml/badge.svg)](https://github.com/thekid/inotify-win/actions/workflows/build.yaml)
 
 A port of the **inotifywait** tool for Windows, see https://github.com/rvoicilas/inotify-tools
 
