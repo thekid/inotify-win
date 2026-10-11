@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -10,8 +11,8 @@ namespace De.Thekid.INotify
     public class ArgumentParser
     {
 
-        /// Helper method for parser
-        protected string Value(string[] args, int i, string name)
+        /// Fetch argument value, raising an exception if missing
+        private string Value(string[] args, int i, string name)
         {
             if (i > args.Length)
             {
@@ -20,29 +21,29 @@ namespace De.Thekid.INotify
             return args[i];
         }
 
-        /// Tokenizes "printf" format string into an array of strings
-        protected string[] TokenizeFormat(string arg)
+        /// Tokenizes a format string
+        private IEnumerable<Token> Tokenize(string format)
         {
-            var result = new List<string>();
-            var tokens = arg.Split(new char[]{ '%' });
-            foreach (var token in tokens)
+            var o = 0;
+            while (o < format.Length)
             {
-                if (token.Length == 0) continue;
+                var p = format.IndexOf('%', o);
+                yield return new Literal(format.Substring(o, p > 0 ? p - o : format.Length));
 
-                if ("efwT".IndexOf(token[0]) != -1)
+                if ('%' == format[p] && p + 1 < format.Length)
                 {
-                    result.Add(token[0].ToString());
-                    if (token.Length > 1)
+                    var kind = format[p + 1];
+                    if ("efwT%".IndexOf(kind) == -1)
                     {
-                        result.Add(token.Substring(1));
+                        throw new ArgumentException(string.Format("Unknown format specifier `{0}`", kind));
                     }
+
+                    yield return new Format(kind);
+                    p++;
                 }
-                else
-                {
-                    result.Add(token);
-                }
+
+                o = p + 1;
             }
-            return result.ToArray();
         }
 
         private void ParseArgument(string option, string[] args, ref int i, Arguments result)
@@ -65,7 +66,7 @@ namespace De.Thekid.INotify
             }
             else if ("--format" == option)
             {
-                result.Format = TokenizeFormat(Value(args, ++i, "format"));
+                result.Format = Tokenize(Value(args, ++i, "format")).ToArray();
             }
             else if ("--exclude" == option)
             {
@@ -89,7 +90,7 @@ namespace De.Thekid.INotify
             }
             else if (option.StartsWith("--format="))
             {
-                result.Format = TokenizeFormat(option.Split(new Char[]{'='}, 2)[1]);
+                result.Format = Tokenize(option.Split(new Char[]{'='}, 2)[1]).ToArray();
             }
             else if (option.StartsWith("--exclude="))
             {
@@ -164,6 +165,7 @@ namespace De.Thekid.INotify
             writer.WriteLine("%f             : File name");
             writer.WriteLine("%w             : Path name");
             writer.WriteLine("%T             : Current date and time");
+            writer.WriteLine("%%             : Percent sign");
         }
     }
 }
