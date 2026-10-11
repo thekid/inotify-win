@@ -10,7 +10,13 @@ namespace De.Thekid.INotify
         private static string[] defaultEvents = new string[] { "create", "modify", "delete", "move" };
         private List<string> events = new List<string>();
         private List<string> paths = new List<string>();
-        private string[] format = new string[] { "w", " ", "e", " ", "f" };
+        private Token[] format = new Token[] {
+            new Format('w'),
+            new Literal(" "),
+            new Format('e'),
+            new Literal(" "),
+            new Format('f')
+        };
 
         /// -r
         public bool Recursive { get; set; }
@@ -22,7 +28,7 @@ namespace De.Thekid.INotify
         public bool Quiet { get; set; }
 
         /// -f
-        public string[] Format {
+        public Token[] Format {
             get { return format; }
             set { format = value; }
         }

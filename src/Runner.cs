@@ -5,8 +5,8 @@ using System.Collections.Generic;
 
 namespace De.Thekid.INotify
 {
-    // List of possible changes
-    public enum Change
+    /// List of possible change types
+    public enum Kind
     {
         CREATE, MODIFY, DELETE, MOVED_FROM, MOVED_TO
     }
@@ -14,9 +14,8 @@ namespace De.Thekid.INotify
     /// Main class
     public class Runner
     {
-        // Mappings
-        protected static Dictionary<WatcherChangeTypes, Change> Changes = new Dictionary<WatcherChangeTypes, Change>();
-
+        private static string EXECUTABLE = "inotifywait";
+        private static Dictionary<WatcherChangeTypes, Kind> Changes = new Dictionary<WatcherChangeTypes, Kind>();
         private List<Thread> _threads = new List<Thread>();
         private ManualResetEventSlim _stopMonitoringEvent;
         private object _notificationReactionLock = new object();
@@ -24,9 +23,9 @@ namespace De.Thekid.INotify
 
         static Runner()
         {
-            Changes[WatcherChangeTypes.Created]= Change.CREATE;
-            Changes[WatcherChangeTypes.Changed]= Change.MODIFY;
-            Changes[WatcherChangeTypes.Deleted]= Change.DELETE;
+            Changes[WatcherChangeTypes.Created]= Kind.CREATE;
+            Changes[WatcherChangeTypes.Changed]= Kind.MODIFY;
+            Changes[WatcherChangeTypes.Deleted]= Kind.DELETE;
         }
 
         public Runner(Arguments args)
@@ -51,8 +50,8 @@ namespace De.Thekid.INotify
             var w = (FileSystemWatcher)sender;
             HandleNotification(w, e, () =>
             {
-                Output(Console.Out, _args.Format, w, Change.MOVED_FROM, e.OldName);
-                Output(Console.Out, _args.Format, w, Change.MOVED_TO, e.Name);
+                Output(Console.Out, _args.Format, w, Kind.MOVED_FROM, e.OldName);
+                Output(Console.Out, _args.Format, w, Kind.MOVED_TO, e.Name);
             });
         }
         
@@ -87,24 +86,19 @@ namespace De.Thekid.INotify
         }
 
         /// Output method
-        protected void Output(TextWriter writer, string[] tokens, FileSystemWatcher source, Change type, string name)
+        protected void Output(TextWriter writer, Token[] tokens, FileSystemWatcher source, Kind kind, string name)
         {
+            var path = Path.Combine(source.Path, name);
             foreach (var token in tokens)
             {
-                var path = Path.Combine(source.Path, name);
-                switch (token[0])
+                switch (token.Kind)
                 {
-                    case 'e':
-                        writer.Write(type);
-                        if (Directory.Exists(path))
-                        {
-                            writer.Write(",ISDIR");
-                        }
-                        break;
+                    case 'e': writer.Write(kind + (Directory.Exists(path) ? ",ISDIR" : "")); break;
                     case 'f': writer.Write(Path.GetFileName(path)); break;
                     case 'w': writer.Write(Path.Combine(source.Path, Path.GetDirectoryName(path))); break;
                     case 'T': writer.Write(DateTime.Now); break;
-                    default: writer.Write(token); break;
+                    case '%': writer.Write('%'); break;
+                    default: writer.Write(token.Value); break;
                 }
             }
             writer.WriteLine();
@@ -203,12 +197,19 @@ namespace De.Thekid.INotify
             // Show usage if no args or standard "help" args are given
             if (0 == args.Length || args[0].Equals("-?") || args[0].Equals("--help"))
             {
-                p.PrintUsage("inotifywait", Console.Error);
+                p.PrintUsage(EXECUTABLE, Console.Error);
                 return 1;
             }
 
-            // Run!
-            return new Runner(p.Parse(args)).Run();
+            try
+            {
+                return new Runner(p.Parse(args)).Run();
+            }
+            catch (ArgumentException e)
+            {
+                p.PrintError(EXECUTABLE, Console.Error, e.Message);
+                return 255;
+            }
         }
     }
 }
