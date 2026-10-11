@@ -1,9 +1,7 @@
-inotify-win
-===========
+# inotify-win
 A port of the **inotifywait** tool for Windows, see https://github.com/rvoicilas/inotify-tools
 
-Compiling
-=========
+## Compiling
 If you have Cygwin installed, just run `sh build.sh` in this directory. This will create the executable, `inotifywait.exe`.
 
 Manual complilation goes as follows:
@@ -12,8 +10,7 @@ Manual complilation goes as follows:
 $ %WINDIR%\Microsoft.NET\Framework\v4.0.30319\csc.exe /o /t:exe /out:inotifywait.exe src\*.cs
 ```
 
-Usage
-=====
+## Usage
 The command line arguments are similar to the original one's:
 
 ```sh
@@ -41,6 +38,8 @@ Formats:
 %%             : Percent sign
 ```
 
-Known issues
-------------
-When moving files, not all events are reported consistently with the original. See [issue #7](https://github.com/thekid/inotify-win/issues/7) for an explanation. **Pull requests welcome!**
+## Contributing
+Pull requests welcome ☺️
+
+### Known issues
+When moving files, not all events are reported consistently with the original. See [issue #7](https://github.com/thekid/inotify-win/issues/7) for an explanation.
