@@ -1,0 +1,41 @@
+name: Build inotifywait
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Locate C# compiler
+        shell: pwsh
+        run: |
+          $csc = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
+          if (-not (Test-Path $csc)) { throw "csc.exe not found at $csc" }
+          "CSC=$csc" >> $env:GITHUB_ENV
+
+      - name: Build inotifywait.exe
+        shell: pwsh
+        run: |
+          & $env:CSC -nologo -target:exe -optimize+ -platform:anycpu `
+            -out:inotifywait.exe `
+            ./src/*.cs
+          if ($LASTEXITCODE -ne 0) { throw "Build failed with exit code $LASTEXITCODE" }
+
+      - name: Test --version
+        shell: pwsh
+        run: |
+          .\inotifywait.exe --version
+          if ($LASTEXITCODE -ne 0) { throw "--version failed with exit code $LASTEXITCODE" }
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: inotifywait
+          path: inotifywait.exe
