@@ -20,6 +20,14 @@ jobs:
           if (-not (Test-Path $csc)) { throw "csc.exe not found at $csc" }
           "CSC=$csc" >> $env:GITHUB_ENV
 
+      - name: Replace version
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}" -replace '^v', '' -replace '$', '.0'
+          $content = Get-Content .\src\AssemblyInfo.cs -Raw
+          $updated = $content -replace 'AssemblyVersion\("[^"]+"\)', "AssemblyVersion(`"$version`")"
+          Set-Content .\src\AssemblyInfo.cs -Value $updated -NoNewline
+
       - name: Build inotifywait.exe
         shell: pwsh
         run: |
