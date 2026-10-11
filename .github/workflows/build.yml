@@ -25,7 +25,7 @@ jobs:
         run: |
           & $env:CSC -nologo -target:exe -optimize+ -platform:anycpu `
             -out:inotifywait.exe `
-            ./src/*.cs
+            .\src\*.cs
           if ($LASTEXITCODE -ne 0) { throw "Build failed with exit code $LASTEXITCODE" }
 
       - name: Test --version
